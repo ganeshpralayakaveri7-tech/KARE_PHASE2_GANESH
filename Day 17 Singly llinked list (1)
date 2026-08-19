@@ -1,0 +1,87 @@
+public class CircularSinglyLinkedList {
+
+    // Node as a static inner class
+    private static class Node {
+        int data;
+        Node next;
+
+        Node(int data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
+
+    private Node head;
+
+    public CircularSinglyLinkedList() {
+        head = null;
+    }
+
+    public void insert(int value) {
+        Node newNode = new Node(value);
+
+        if (head == null) {
+            head = newNode;
+            head.next = head;
+            return;
+        }
+
+        Node current = head;
+        while (current.next != head) {
+            current = current.next;
+        }
+
+        current.next = newNode;
+        newNode.next = head;
+    }
+
+    public int sum() {
+        if (head == null) {
+            return 0;
+        }
+
+        int total = 0;
+        Node current = head;
+
+        do {
+            total += current.data;
+            current = current.next;
+        } while (current != head);
+
+        return total;
+    }
+
+    public void display() {
+        if (head == null) {
+            System.out.println("List is empty");
+            return;
+        }
+
+        Node current = head;
+        do {
+            System.out.print(current.data + " ");
+            current = current.next;
+        } while (current != head);
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        CircularSinglyLinkedList list = new CircularSinglyLinkedList();
+
+        list.insert(10);
+        list.insert(20);
+        list.insert(30);
+        list.insert(5);
+
+        System.out.print("List elements: ");
+        list.display();
+
+        int sum = list.sum();
+        System.out.println("Sum of elements: " + sum);
+    }
+}
+output
+List elements: 10 20 30 5 
+Sum of elements: 65
+
+=== Code Execution Successful ===
