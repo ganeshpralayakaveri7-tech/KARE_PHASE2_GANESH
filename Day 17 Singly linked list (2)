@@ -1,0 +1,134 @@
+// Node class for circular singly linked list
+class Node {
+    int data;
+    Node next;
+
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+// Circular Singly Linked List class
+public class CircularSinglyLinkedList {
+    private Node head; // points to the first node; list is circular
+
+    public CircularSinglyLinkedList() {
+        head = null;
+    }
+
+    // Insert at the end of the list
+    public void insert(int value) {
+        Node newNode = new Node(value);
+
+        if (head == null) {
+            head = newNode;
+            head.next = head; // point to itself
+            return;
+        }
+
+        Node current = head;
+        while (current.next != head) {
+            current = current.next;
+        }
+
+        current.next = newNode;
+        newNode.next = head;
+    }
+
+    // Compute sum of all elements in the circular list
+    public int sum() {
+        if (head == null) {
+            return 0;
+        }
+
+        int total = 0;
+        Node current = head;
+
+        do {
+            total += current.data;
+            current = current.next;
+        } while (current != head);
+
+        return total;
+    }
+
+    // Sort the list in ascending order (simple bubble-sort style on data)
+    public void sort() {
+        if (head == null || head.next == head) {
+            return; // 0 or 1 element, already sorted
+        }
+
+        boolean swapped;
+        do {
+            swapped = false;
+            Node current = head;
+
+            // We go until current.next != head, because last node's next is head
+            while (current.next != head) {
+                if (current.data > current.next.data) {
+                    // Swap data
+                    int temp = current.data;
+                    current.data = current.next.data;
+                    current.next.data = temp;
+                    swapped = true;
+                }
+                current = current.next;
+            }
+
+            // Also compare last node with head (because it's circular)
+            if (current.data > head.data) {
+                int temp = current.data;
+                current.data = head.data;
+                head.data = temp;
+                swapped = true;
+            }
+
+        } while (swapped);
+    }
+
+    // Display the list
+    public void display() {
+        if (head == null) {
+            System.out.println("List is empty");
+            return;
+        }
+
+        Node current = head;
+        do {
+            System.out.print(current.data + " ");
+            current = current.next;
+        } while (current != head);
+        System.out.println();
+    }
+
+    // Main method
+    public static void main(String[] args) {
+        CircularSinglyLinkedList list = new CircularSinglyLinkedList();
+
+        list.insert(30);
+        list.insert(10);
+        list.insert(50);
+        list.insert(20);
+        list.insert(5);
+
+        System.out.print("Original list: ");
+        list.display();
+
+        int sum = list.sum();
+        System.out.println("Sum of elements: " + sum);
+
+        list.sort();
+
+        System.out.print("Sorted list:   ");
+        list.display();
+
+        sum = list.sum();
+        System.out.println("Sum of sorted elements: " + sum);
+    }
+}
+output
+Original list: 30 10 50 20 5 
+Sum of elements: 115
+Sorted list:   5 10 20 30 50 
+Sum of sorted elements: 115
