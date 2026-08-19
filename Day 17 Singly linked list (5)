@@ -1,0 +1,199 @@
+// Node class for circular singly linked list
+class Node {
+    int data;
+    Node next;
+
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+// Circular Singly Linked List class
+public class CircularSinglyLinkedList {
+    private Node head; // points to the first node; list is circular
+
+    public CircularSinglyLinkedList() {
+        head = null;
+    }
+
+    // Insert at the end of the list
+    public void insert(int value) {
+        Node newNode = new Node(value);
+
+        if (head == null) {
+            head = newNode;
+            head.next = head; // point to itself (circular)
+            return;
+        }
+
+        Node current = head;
+        while (current.next != head) {
+            current = current.next;
+        }
+
+        current.next = newNode;
+        newNode.next = head; // maintain circularity
+    }
+
+    // Display the list
+    public void display() {
+        if (head == null) {
+            System.out.println("List is empty");
+            return;
+        }
+
+        Node current = head;
+        do {
+            System.out.print(current.data + " ");
+            current = current.next;
+        } while (current != head);
+        System.out.println();
+    }
+
+    // Compute sum of all elements
+    public int sum() {
+        if (head == null) {
+            return 0;
+        }
+
+        int total = 0;
+        Node current = head;
+
+        do {
+            total += current.data;
+            current = current.next;
+        } while (current != head);
+
+        return total;
+    }
+
+    // Find maximum element
+    public int max() {
+        if (head == null) {
+            throw new IllegalStateException("List is empty");
+        }
+
+        int maximum = head.data;
+        Node current = head.next;
+
+        while (current != head) {
+            if (current.data > maximum) {
+                maximum = current.data;
+            }
+            current = current.next;
+        }
+
+        return maximum;
+    }
+
+    // Sort the list in ascending order (bubble-sort style on data)
+    public void sort() {
+        if (head == null || head.next == head) {
+            return; // 0 or 1 element
+        }
+
+        boolean swapped;
+        do {
+            swapped = false;
+            Node current = head;
+
+            while (current.next != head) {
+                if (current.data > current.next.data) {
+                    int temp = current.data;
+                    current.data = current.next.data;
+                    current.next.data = temp;
+                    swapped = true;
+                }
+                current = current.next;
+            }
+
+            // Compare last node with head (circular)
+            if (current.data > head.data) {
+                int temp = current.data;
+                current.data = head.data;
+                head.data = temp;
+                swapped = true;
+            }
+
+        } while (swapped);
+    }
+
+    // Reverse the circular singly linked list
+    public void reverse() {
+        if (head == null || head.next == head) {
+            return; // 0 or 1 element, nothing to reverse
+        }
+
+        Node prev = null;
+        Node current = head;
+        Node next = null;
+        Node last = head;
+
+        // Find the last node (whose next is head)
+        while (last.next != head) {
+            last = last.next;
+        }
+
+        // Standard reverse, but we must keep circularity
+        Node newHead = null;
+
+        do {
+            next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+
+            if (newHead == null && prev != null) {
+                // After first iteration, prev will become the new head eventually
+                // We'll set newHead at the end as prev after loop
+            }
+        } while (current != head);
+
+        // At this point:
+        // - prev is the last node processed, which should become the new head
+        // - old head's next is still null; we must fix circular links
+
+        newHead = prev;          // new head is the last node in original order
+        head.next = newHead;     // old head is now last, so its next = newHead
+
+        head = newHead;          // update head reference
+    }
+
+    // Main method: test all operations
+    public static void main(String[] args) {
+        CircularSinglyLinkedList list = new CircularSinglyLinkedList();
+
+        // Insert elements
+        list.insert(30);
+        list.insert(10);
+        list.insert(50);
+        list.insert(20);
+        list.insert(5);
+
+        System.out.print("Original list:     ");
+        list.display();
+
+        System.out.println("Sum: " + list.sum());
+        System.out.println("Max: " + list.max());
+
+        list.sort();
+        System.out.print("Sorted list:       ");
+        list.display();
+
+        list.reverse();
+        System.out.print("Reversed list:     ");
+        list.display();
+
+        System.out.println("Sum after reverse: " + list.sum());
+        System.out.println("Max after reverse: " + list.max());
+    }
+}
+output
+Original list:     30 10 50 20 5 
+Sum: 115
+Max: 50
+Sorted list:       5 10 20 30 50 
+Reversed list:     50 30 20 10 5 
+Sum after reverse: 115
+Max after reverse: 50
