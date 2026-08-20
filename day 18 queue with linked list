@@ -1,0 +1,92 @@
+class Main {
+
+    // Node class
+    class Node {
+        int data;
+        Node next;
+
+        Node(int data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
+
+    Node front = null;
+    Node rear = null;
+
+    // Enqueue - insert at rear
+    void enqueue(int data) {
+        Node newNode = new Node(data);
+
+        if (rear == null) {
+            front = rear = newNode;
+        } else {
+            rear.next = newNode;
+            rear = newNode;
+        }
+
+        System.out.println(data + " inserted");
+    }
+
+    // Dequeue - delete from front
+    void dequeue() {
+        if (front == null) {
+            System.out.println("Queue is empty");
+            return;
+        }
+
+        System.out.println(front.data + " deleted");
+        front = front.next;
+
+        if (front == null) {
+            rear = null;
+        }
+    }
+
+    // Display queue
+    void display() {
+        if (front == null) {
+            System.out.println("Queue is empty");
+            return;
+        }
+
+        Node temp = front;
+
+        System.out.print("Queue: ");
+
+        while (temp != null) {
+            System.out.print(temp.data + " ");
+            temp = temp.next;
+        }
+
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        Main q = new Main();
+
+        q.enqueue(10);
+        q.enqueue(20);
+        q.enqueue(30);
+
+        q.display();
+
+        q.dequeue();
+
+        q.display();
+
+        q.dequeue();
+
+        q.display();
+    }
+}
+output
+  10 inserted
+20 inserted
+30 inserted
+Queue: 10 20 30
+10 deleted
+Queue: 20 30
+20 deleted
+Queue: 30
+
