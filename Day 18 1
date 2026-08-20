@@ -1,0 +1,65 @@
+import java.util.*;
+
+class Main {
+    int front, rear;
+    int n;
+    int queue[];
+
+    Main(int n) {
+        this.n = n;
+        queue = new int[n];
+        front = 0;
+        rear = -1;
+    }
+
+    void enqueue(int data) {
+        if (rear == n - 1) {
+            System.out.println("Queue is full");
+            return;
+        }
+
+        rear++;
+        queue[rear] = data;
+    }
+
+    int dequeue() {
+        if (front > rear) {
+            System.out.println("Queue is empty");
+            return -1;
+        }
+
+        return queue[front++];
+    }
+
+    void display() {
+        if (front > rear) {
+            System.out.println("Queue is empty");
+            return;
+        }
+
+        for (int i = front; i <= rear; i++) {
+            System.out.print(queue[i] + " ");
+        }
+
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        Main q = new Main(5);
+
+        q.enqueue(10);
+        q.enqueue(20);
+        q.enqueue(30);
+
+        q.display();
+
+        System.out.println("Deleted: " + q.dequeue());
+
+        q.display();
+    }
+}
+
+output
+10 20 30 
+Deleted: 10
+20 30 
